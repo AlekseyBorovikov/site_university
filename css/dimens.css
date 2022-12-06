@@ -1,0 +1,48 @@
+:root {
+  /* componets size */
+  /* main blocks */
+  --header-height: 72px;
+  --footer-height: 96px;
+  /* paddings / margins */
+  --small-indent: 4px;
+  --normal-indent: 8px;
+  --medium-indent: 16px;
+  --medium-24-indent: 24px;
+  --big-indent: 32px;
+  --large-indent: 48px;
+  /* border */
+  --border-radius: 10px;
+  --border-width: 5px;
+  /* text styles */
+  --caption-font-size: 36px;
+  --pre-caption-font-size: 24px;
+  --common-font-size: 18px;
+  --code-font-size: 14px;
+  /* img */
+  --icon_size: 24x;
+}
+
+@media screen and (max-width: 700px) {
+  :root {
+    /* main blocks */
+    --header-height: 40px;
+    --footer-height: 52px;
+    /* paddings / margins */
+    --small-indent: 2px;
+    --normal-indent: 4px;
+    --medium-indent: 8px;
+    --medium-24-indent: 12px;
+    --big-indent: 16px;
+    --large-indent: 24px;
+    /* border */
+    --border-width: 3px;
+    /* text styles */
+    --caption-font-size: 22px;
+    --pre-caption-font-size: 15px;
+    --common-font-size: 12px;
+    --code-font-size: 9px;
+    /* img */
+    --icon_size: 24px;
+  }
+
+}

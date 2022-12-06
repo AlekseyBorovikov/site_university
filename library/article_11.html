@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Библиотека</title>
+		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<link rel="stylesheet" type="text/css" href="../css/image_style.css">
+		<link rel="stylesheet" type="text/css" href="../css/font-style.css">
+		<link rel="stylesheet" type="text/css" href="../css/layout-style.css">
+		<link rel="stylesheet" type="text/css" href="../css/dimens.css">
+		<link rel="stylesheet" type="text/css" href="../css/colors.css">
+		<script src="../components/main_inform.js" type="text/javascript" defer></script>
+		<script src="../components/header.js" type="text/javascript" defer></script>
+		<script src="../components/menu.js" type="text/javascript" defer></script>
+		<script src="../components/footer.js" type="text/javascript" defer></script>
+	</head>
+
+	<body>
+ 
+ 		<div class="back_button"><a href="index.html">&#10094; Назад в библиотеку</a></div>
+		
+		<main class="flex-center">
+
+			<article>
+
+				<div class="flex-center">
+					<div>
+						<h2 id="text-align-center">Создание многопользовательской игры с помощью libGDX — Часть 1: Настройка проекта</h2>
+						<p id="text-align-right"><i><b>Sagnik Dutta</b></i></p>
+					</div>
+				</div>
+				
+				<p>&emsp;libGDX — это кроссплатформенная среда разработки игр на Java с открытым исходным кодом. Он довольно популярен в сообществе разработчиков игр и использовался для создания множества популярных игр. Он также имеет отличную документацию, что упрощает его изучение, если у вас есть некоторый опыт разработки.</p>
+				<p>&emsp;В то время как игровые движки, такие как Unity или Unreal Engine, просты в освоении и отлично подходят для быстрой разработки, если вы похожи на меня и просто хотите сделать шаг назад и погрузиться в мельчайшие детали, эти движки абстрагируются от вас, или вы просто хотите отшлифовать свои навыки ООП или Java, я бы настоятельно рекомендовал вам попробовать libGDX.</p>
+				<p>&emsp;В этой серии я собираюсь познакомить вас с процессом создания простой многопользовательской игры с использованием libGDX. Цель состоит в том, чтобы понять различные задействованные концепции и настроить рабочий процесс, который вы затем сможете расширить и применить к своим собственным играм. В этой статье мы сосредоточимся на настройке нашего приложения, добавив все зависимости. Я также буду объяснять функцию каждой из этих зависимостей в нашем проекте.</p>
+				<p>&emsp;Однако я хотел бы подчеркнуть, что эта серия не рекомендуется для тех, кто совершенно новичок в программировании. Я собираюсь предположить, что у вас есть некоторый предыдущий опыт разработки программного обеспечения и вы знакомы с концепциями ООП.</p>
+				<p>&emsp;Давайте начнем!</p>
+				<h2>Необходимые компоненты</h2>
+				<ul class="links">
+					<li>1. Java 8 или выше (<a class="content" href="https://adoptopenjdk.net/">https://adoptopenjdk.net/</a>);</li>
+					<li>2. Node.js 14 или выше (<a class="content" href="https://nodejs.org/">https://nodejs.org/</a>);</li>
+					<li>3. IDE или текстовый редактор по вашему выбору. Лично я предпочитаю использовать IntelliJ для работы на Java и Sublime Text 3 для Node.js;</li>
+					<li>4. Базовое понимание программирования на Java и Nodejs (javascript).</li>
+				</ul>
+				<p>&emsp;Вот и все! Это все, что вам нужно, чтобы следовать дальше.</p>
+				<h2>Установка</h2>
+				<p>&emsp;Итак, чтобы начать, нам нужно следовать инструкциям в <a href="https://libgdx.com/dev/">https://libgdx.com/dev/</a> и сгенерируйте проект libGDX с помощью генератора проектов. Как только это будет сделано, продолжайте и откройте проект в любой среде разработки по вашему выбору.</p>
+				<p>&emsp;Если вы заглянете в корневой каталог вашего проекта, вы найдете файл с именем build.gradle. Откройте его и прокрутите вправо до нижней части файла, и вы должны увидеть блок, подобный этому.</p>
+				<br><div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>project(":core") {</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;apply plugin: "java-library"</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;dependencies {</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;api "com.badlogicgames.gdx:gdx:$gdxVersion"</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+					<span class="tr"><span class="th"></span><code>}</code></span>
+					<span class="tr"><span class="th"></span></span>
+					</pre>
+				</div><br/>
+				<p>&emsp;Мы собираемся добавить здесь еще несколько зависимостей, окончательная версия должна выглядеть следующим образом.</p>
+				<br><div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>project(":core") {</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;apply plugin: "java-library"</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;dependencies {</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;api "com.badlogicgames.gdx:gdx:$gdxVersion"</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;compileOnly   "org.projectlombok:lombok:1.18.20"</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;annotationProcessor "org.projectlombok:lombok:1.18.20"</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;implementation "com.google.dagger:dagger:2.35.1"</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;annotationProcessor "com.google.dagger:dagger-compiler:2.35.1"</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;api "io.socket:socket.io-client:2.0.0"</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+					<span class="tr"><span class="th"></span><code>}</code></span>
+					<span class="tr"><span class="th"></span></span>
+					</pre>
+				</div><br/>
+				<p>&emsp;Не волнуйтесь, я немного объясню функцию каждой из этих зависимостей, но пока это все, что нам нужно сделать в нашем Java-проекте.</p>
+				<p>&emsp;Далее создайте отдельный каталог. Здесь мы собираемся создать наш игровой сервер с помощью nodejs. Откройте терминал и выполните следующую команду</p>
+				<br><div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>npm init</code></span>
+					</pre>
+				</div><br/>
+				<p>&emsp;Это запустит мастер, в котором вы сможете ввести название вашего приложения, описание, лицензию и т.д. Введите любое имя и просто оставьте все остальное по умолчанию на данный момент (вы всегда можете отредактировать это позже). Это создаст файл с именем package.json.</p>
+				<br><div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>npm install --save express</code></span>
+					<span class="tr"><span class="th"></span><code>npm install --save socket.io</code></span>
+					</pre>
+				</div><br/>
+
+				<p>&emsp;Это позволит загрузить и установить экспресс и socket.io . Это единственные две зависимости, которые нам нужны на нашем сервере.</p>
+				<p>&emsp;Вот и все! Мы закончили с настройкой!</p>
+				<h2>Зависимости</h2>
+				<p>&emsp;В этом разделе я расскажу вам о зависимостях, которые мы добавили в наш проект, и их функциях. Зависимости, которые мы включили, - это Ломбок, Кинжал, Socket.io (клиент в проекте Java и сервер в проекте Nodejs) и Express. Я пропущу объяснение для Express, поскольку он настолько популярен, что является почти синонимом любого сервера Nodejs. Если вы хотите сразу погрузиться в создание игры, вы можете пропустить этот раздел, хотя я бы рекомендовал делать это только в том случае, если вы уже знакомы со всем этим.</p>
+				<p>&emsp;Теперь, когда с этим покончено, давайте взглянем на наши зависимости одну за другой.</p>
+				<ul class="links">
+					<li>1. Lombok
+						<p>Lombok - это библиотека, которая автоматически генерирует код котельной плиты, который в противном случае нам пришлось бы добавлять вручную. Это делается путем аннотирования наших классов и полей аннотациями Lombok. Это особенно полезно при определении POJOs. Например, если бы мы сделали это обычным способом с конструкторами, геттерами и сеттерами, у нас было бы что-то вроде этого.</p>
+						<br><div class="flex-center">
+							<pre class="code">
+							<span class="tr first-row"><span class="th"></span><code>public class ExamplePojo {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;private int field1;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;private Boolean field2;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;public ExamplePojo(int field1, Boolean field2) {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;&emsp;this.field1 = field1;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;&emsp;this.field2 = field2;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;public int getField1() {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;&emsp;return field1;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;public Boolean getField2() {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;&emsp;return field2;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;public void setField1(int field1) {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;&emsp;this.field1 = field1;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;public void setField2(Boolean field2) {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;&emsp;this.field2 = field2;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+							<span class="tr"><span class="th"></span><code>}</code></span>
+							</pre>
+						</div><br/>
+						<p>Однако, если мы используем Lombok, эквивалентный код будет выглядеть следующим образом</p>
+						<br><div class="flex-center">
+							<pre class="code">
+							<span class="tr first-row"><span class="th"></span><code>import lombok.AllArgsConstructor;</code></span>
+							<span class="tr"><span class="th"></span><code>import lombok.Data;</code></span>
+							<span class="tr"><span class="th"></span><code></code></span>
+							<span class="tr"><span class="th"></span><code>@Data</code></span>
+							<span class="tr"><span class="th"></span><code>@AllArgsConstructor</code></span>
+							<span class="tr"><span class="th"></span><code>public class ExamplePojo {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;private int field1;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;private Boolean field2;</code></span>
+							<span class="tr"><span class="th"></span><code>}</code></span>
+							</pre>
+						</div><br/>
+						<p>Все средства получения, настройки и конструкторы по-прежнему генерируются при компиляции этого кода (возможно, вам потребуется настроить вашу среду разработки, чтобы разрешить обработку аннотаций для отражения изменений в среде разработки).
+						Как вы можете видеть, это значительно улучшает читаемость, поскольку удаляется весь отвлекающий шаблонный код. В библиотеке Lombok есть много аннотаций, и они позволяют вам точно настроить генерацию кода по своему вкусу.</p>
+						<p>Лично мне нравится использовать аннотации @Builder и @Value, поскольку я обычно стараюсь сделать свои POJOs неизменяемыми, а шаблон builder значительно улучшает читаемость кода.</p>
+						<p>Мы можем добавить Lombok в проект gradle, включив следующие зависимости</p>
+						<br><div class="flex-center">
+							<pre class="code">
+							<span class="tr first-row"><span class="th"></span><code>compileOnly   "org.projectlombok:lombok:1.18.20"</code></span>
+							<span class="tr"><span class="th"></span><code>annotationProcessor "org.projectlombok:lombok:1.18.20"</code></span>
+							</pre>
+						</div><br/>
+					</li>
+					<li>2. Dagger
+						<p>Dagger - это фреймворк для внедрения зависимостей во время компиляции, который может автоматически вводить зависимости и создавать объекты для нас. Например, давайте предположим, что классы в нашем проекте имеют график зависимостей, подобный этому.</p>
+						<div class="image_container flex-center" id="anim">
+							<img src="images/dagger.webp" class="responsive_image_30 flex-center">
+						</div><br>
+						<p>Таким образом, наш java-код будет выглядеть примерно так</p>
+						<br><div class="flex-center">
+							<pre class="code">
+							<span class="tr first-row"><span class="th"></span><code>class ClassA {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;private ClassB classB;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;private ClassC classC;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;public ClassA(ClassB classB, ClassC classC) {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;&emsp;this.classB = classB;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;&emsp;this.classC = classC;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+							<span class="tr"><span class="th"></span><code>}</code></span>
+							<span class="tr"><span class="th"></span><code></code></span>
+							<span class="tr"><span class="th"></span><code>class ClassB {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;public ClassB() {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+							<span class="tr"><span class="th"></span><code>}</code></span>
+							<span class="tr"><span class="th"></span><code></code></span>
+							<span class="tr"><span class="th"></span><code>class ClassC {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;private ClassD classD;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;public ClassC(ClassD classD) {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;&emsp;this.classD = classD;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+							<span class="tr"><span class="th"></span><code>}</code></span>
+							<span class="tr"><span class="th"></span><code></code></span>
+							<span class="tr"><span class="th"></span><code>class ClassD {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;public ClassD() {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+							<span class="tr"><span class="th"></span><code>}</code></span>
+							<span class="tr"><span class="th"></span><code></code></span>
+							<span class="tr"><span class="th"></span><code>public class Main {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;public static void main(String[] args) {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;&emsp;ClassA classA = new ClassA(new ClassB(), new ClassC(new ClassD()));</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+							<span class="tr"><span class="th"></span><code>}</code></span>
+							</pre>
+						</div><br/>
+						<p>Видите этот метод main()? Чтобы создать объект ClassA, нам пришлось создать экземпляр каждого отдельного объекта в его дереве зависимостей. Вы можете видеть, как это может стать очень громоздким, когда у вас есть проект с сотнями классов.</p>
+						<p>Вот тут-то и пригодится Кинжал. Dagger может автоматически проверять дерево зависимостей и генерировать код для внедрения необходимых нам объектов. Все, что нам нужно сделать, это аннотировать конструкторы классов в дереве зависимостей с помощью @javax.inject.Введите, который является стандартной аннотацией java, и создайте компонент Dagger для предоставления интересующего нас класса. Мы даже можем сделать наши классы одноэлементными, аннотируя их с помощью @javax.inject.Синглтон. Итак, наш измененный код будет выглядеть следующим образом.</p>
+						<br><div class="flex-center">
+							<pre class="code">
+							<span class="tr first-row"><span class="th"></span><code>import dagger.Component;</code></span>
+							<span class="tr"><span class="th"></span><code></code></span>
+							<span class="tr"><span class="th"></span><code>import javax.inject.Inject;</code></span>
+							<span class="tr"><span class="th"></span><code>import javax.inject.Singleton;</code></span>
+							<span class="tr"><span class="th"></span><code></code></span>
+							<span class="tr"><span class="th"></span><code>@Singleton</code></span>
+							<span class="tr"><span class="th"></span><code>class ClassA {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;private ClassB classB;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;private ClassC classC;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;@Inject</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;public ClassA(ClassB classB, ClassC classC) {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;&emsp;this.classB = classB;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;&emsp;this.classC = classC;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+							<span class="tr"><span class="th"></span><code>}</code></span>
+							<span class="tr"><span class="th"></span><code></code></span>
+							<span class="tr"><span class="th"></span><code>@Singleton</code></span>
+							<span class="tr"><span class="th"></span><code>class ClassB {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;@Inject</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;public ClassB() {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+							<span class="tr"><span class="th"></span><code>}</code></span>
+							<span class="tr"><span class="th"></span><code></code></span>
+							<span class="tr"><span class="th"></span><code>@Singleton</code></span>
+							<span class="tr"><span class="th"></span><code>class ClassC {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;private ClassD classD;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;@Inject</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;public ClassC(ClassD classD) {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;&emsp;this.classD = classD;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+							<span class="tr"><span class="th"></span><code>}</code></span>
+							<span class="tr"><span class="th"></span><code></code></span>
+							<span class="tr"><span class="th"></span><code>@Singleton</code></span>
+							<span class="tr"><span class="th"></span><code>class ClassD {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;@Inject</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;public ClassD() {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+							<span class="tr"><span class="th"></span><code>}</code></span>
+							<span class="tr"><span class="th"></span><code></code></span>
+							<span class="tr"><span class="th"></span><code>@Singleton</code></span>
+							<span class="tr"><span class="th"></span><code>@Component</code></span>
+							<span class="tr"><span class="th"></span><code>interface AppComponent {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;ClassA getClassA();</code></span>
+							<span class="tr"><span class="th"></span><code>}</code></span>
+							<span class="tr"><span class="th"></span><code></code></span>
+							<span class="tr"><span class="th"></span><code>public class Main {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;public static void main(String[] args) {</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;&emsp;AppComponent appComponent = DaggerAppComponent.create();</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;&emsp;ClassA classA = appComponent.getClassA();</code></span>
+							<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+							<span class="tr"><span class="th"></span><code>}</code></span>
+							</pre>
+						</div><br/>
+						<p>Видите теперь метод main()? Мы можем напрямую извлечь экземпляр ClassA, используя интерфейс AppComponent, который мы аннотировали с помощью @Component, и Dagger позаботится обо всем внедрении зависимостей за нас. Вы заметите, что мы имеем в виду класс с именем DaggerAppComponent, этот класс будет сгенерирован dagger при компиляции вашего кода, и у него будет то же имя, что и у интерфейса вашего компонента, с префиксом ‘Dagger’. В случае, если у вас есть ваши компоненты в отдельном пакете (что, скорее всего, будет в реальном приложении), сгенерированный класс компонента будет присутствовать в том же пакете, что и интерфейс компонента.The text size exceeds the maximum.</p>
+						<p>Пример, который мы видели, был случаем, когда Dagger автоматически вводил все наши зависимости для нас. У нас также есть возможность контролировать, какие зависимости используются с помощью модулей dagger, но мы разберемся с этим, когда начнем создавать нашу игру.</p>
+						<p>Мы можем добавить dagger в проект gradle, добавив следующие зависимости</p>
+						<br><div class="flex-center">
+							<pre class="code">
+							<span class="tr first-row"><span class="th"></span><code>implementation "com.google.dagger:dagger:2.35.1"</code></span>
+							<span class="tr"><span class="th"></span><code>annotationProcessor "com.google.dagger:dagger-compiler:2.35.1"</code></span>
+							</pre>
+						</div><br/>
+					</li>
+					<li>3. Socket.io
+						<p>Разъем.io - это библиотека, которая действует как оболочка поверх Websockets. Основное различие между связью websocket и стандартным http заключается в том, что запросы в http являются однонаправленными (клиент отправляет запросы серверу, на который сервер отвечает), тогда как Websockets являются двунаправленными (как сервер, так и клиент могут отправлять запросы друг другу).</p>
+						<p>Это особенно полезно для нашего варианта использования при создании многопользовательской игры, потому что каждый игрок также должен быть осведомлен о действиях другого игрока. Способ, которым мы могли бы достичь этого с помощью http, - это использовать длительный опрос. Однако это привело бы к большому количеству обращений к серверу, особенно если мы хотим обновлять наше представление в режиме реального времени.</p>
+						<p>Используя socket.io , мы можем заставить сервер отправлять сообщения каждому клиенту всякий раз, когда изменяется состояние сервера, что означает, что клиентам не нужно продолжать опрашивать сервер и они могут просто реагировать на события, отправляемые сервером.</p>
+						<p>Однако это создает некоторые проблемы с libGDX, поскольку все рендеринги экрана выполняются основным потоком, в то время как прослушиватели сокетов будут выполняться в других асинхронных потоках. В следующей части этой серии мы рассмотрим, как мы можем решить эту проблему и при этом сохранить модульность нашего кода.</p>
+					</li>
+				</ul>
+			</article>
+
+		</main>
+	</body>
+</html>

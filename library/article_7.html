@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Библиотека</title>
+		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<link rel="stylesheet" type="text/css" href="../css/image_style.css">
+		<link rel="stylesheet" type="text/css" href="../css/font-style.css">
+		<link rel="stylesheet" type="text/css" href="../css/layout-style.css">
+		<link rel="stylesheet" type="text/css" href="../css/dimens.css">
+		<link rel="stylesheet" type="text/css" href="../css/colors.css">
+		<script src="../components/main_inform.js" type="text/javascript" defer></script>
+		<script src="../components/header.js" type="text/javascript" defer></script>
+		<script src="../components/menu.js" type="text/javascript" defer></script>
+		<script src="../components/footer.js" type="text/javascript" defer></script>
+	</head>
+
+	<body>
+ 
+ 		<div class="back_button"><a href="index.html">&#10094; Назад в библиотеку</a></div>
+		
+		<main class="flex-center">
+
+			<article>
+
+				<div class="flex-center">
+					<div>
+						<h2 id="text-align-center">Методы оптимизации под OPENGL</h2>
+						<p id="text-align-center"><i>И.В. Дикан, Ю.С. Белов</i></p>
+						<p id="text-align-center"><i>КФ МГТУ им. Н.Э. Баумана, Калуга, 248000, Россия</i></p>
+					</div>
+				</div>
+				<p id="tab"><i>&emsp;<b>Аннотация: </b> Рассмотрены основные методы оптимизации графических приложений, написанных с использованием OpenGL. Описаны методы низкоуровневой оптимизации, в том числе использующие различные расширения OpenGL. Приведены улучшенные методы отрисовки графических объектов. Изложены методы изменения формата графических объектов для повышения производительности конечных приложений.</i></p>
+				<p id="tab"><i>&emsp;<b>Ключевые слова: </b>VBO, VAO, OpenGL, 3D-графика, DXT, оптимизация, шейдеры, MipMapping, Occlusion Query, Frustum Culling.</i></p>
+				
+				<h2>Введение</h2>
+				<p>&emsp;Оптимизация рендеринга является важным этапом разработки конечного приложения, поскольку позволяет увеличить число кадров в секунду, снизить требования к аппаратному обеспечению в приложениях реального времени, а для рендеров — уменьшить время, затрачиваемое на отрисовку конечной сцены. При нарушении принципов оптимизации мы можем получить низкую производительность даже на самых простых сценах, поэтому не стоит пренебрегать ими.</p>
+				<p>&emsp;Большинство способов оптимизации основано на использовании специализированных расширений драйвера, о которых многие разработчики забывают или вовсе не хотят знать. Однако одними расширениями не обойтись — спектр проблем, которые необходимо решить, слишком велик и затрагивает множество подсистем рендеринга. При этом стоит учитывать, что увеличение производительности от использования одного или нескольких методов может быть минимально, а может достигать 100 % и более. Все зависит от особенностей приложения.</p>
+				<p>&emsp;Рассмотрим основные методы оптимизации приложений: низкоуровневые, рисования моделей и оптимизации моделей.</p>
+				<h2>Низкоуровневые оптимизации.</h2>
+				<p>&emsp;Использование старых функций OpenGL, например Begin-End, серьезно уменьшает производительность, поскольку они имеют большие накладные расходы. К тому же в новых версиях OpenGL эти функции объявлены как deprecated. От них следует отказаться в пользу новых расширений типа ARB_vertex_buffer_object (VBO), позволяющих хранить вертексы в одном буфере в памяти GPU. Следующий пример демонстрирует разницу старого и нового подходов:</p><br>
+				<div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>struct Vertex {</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;float x, y, z;</code></span>
+					<span class="tr"><span class="th"></span><code>}</code></span>
+					<span class="tr"><span class="th"></span></span>
+					<span class="tr"><span class="th"></span><code>void drawOldWay(ref const Vertex[] vertices) {</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// старый стиль отрисовки</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;Begin(GL_TRIANGLES);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;foreach(v; vertices)</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;// все вертексы каждый раз передаются</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;// из оперативной памяти в память GPU</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;Vertex3f(v.x, v.y, v.z);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;End();</code></span>
+					<span class="tr"><span class="th"></span><code>}</code></span>
+					<span class="tr"><span class="th"></span></span>
+					<span class="tr"><span class="th"></span><code>uint createVBO(ref const Vertex[] vertices) {</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// функция создания VBO</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;uint id;</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// создаётся буфер</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;GenBuffers(1, &id);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// привязывается к текущему контексту</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;BindBuffer(GL_ARRAY_BUFFER, id);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// данные загружаются в быструю память GPU</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;BufferData(GL_ARRAY_BUFFER,Vertex.sizeof * vertices.length, vertices.ptr,GL_STATIC_DRAW);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;return id;</code></span>
+					<span class="tr"><span class="th"></span><code>}</code></span>
+					<span class="tr"><span class="th"></span></span>
+					<span class="tr"><span class="th"></span><code>void bindVBO(uint id) {</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// включается нулевой атрибут,</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// по которому обычно располагаются координаты</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;EnableVertexAttribArray(0);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;BindBuffer(GL_ARRAY_BUFFER, id);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// OpenGL уведомляется о содержимом буфера</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;VertexAttribPointer(</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;0, // номер атрибута (обычно это 0)</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;3, // количество элементов</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;GL_FLOAT, // тип элементов</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;GL_FALSE, // элементы не нуждаются в нормализации</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;0, // все элементы идут друг за другом</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;null // базовое смещение отсутствует</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;);</code></span>
+					<span class="tr"><span class="th"></span><code>}</code></span>
+					<span class="tr"><span class="th"></span></span>
+					<span class="tr"><span class="th"></span><code>void unbindVBO() { DisableVertexAttribArray(0); }</code></span>
+					<span class="tr"><span class="th"></span></span>
+					<span class="tr"><span class="th"></span><code>void drawNewWay(uint id, uint count) {</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// отрисовка с использованием VBO</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;bindVBO(); // прикрепление VBO</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;DrawArrays(GL_TRIANGLES, 0, count);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// отрисовка треугольников</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// отвязка VBO, так как оно более не используется unbindVBO();</code></span>
+					<span class="tr"><span class="th"></span><code>}</code></span>
+					</pre>
+				</div><br/>
+				<p>&emsp;Если набор буферов при рисовании с использованием VBO по- стоянен, то лучше применять ARB_vertex_array_object (VAO). По аналогии с display lists VAO позволяет «записать» последовательность команд для рендеринга и затем «воспроизвести» их, т. е. уменьшить накладные расходы. Приведенный ниже пример демон- стрирует это:</p><br>
+				<div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>uint createVAO(uint vboId) {</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;uint id;</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;GenVertexArrays(1, &id);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// с этого момента OpenGL будет «записывать» всю</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// последовательность изменений конвейера</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;BindVertexArray(id);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;bindVBO(vboId); // привязка VBO</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;BindVertexArray(0); // окончание «записи»</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;unbindVBO();</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;return id;</code></span>
+					<span class="tr"><span class="th"></span><code>}</code></span>
+					<span class="tr"><span class="th"></span></span>
+					<span class="tr"><span class="th"></span><code>void drawVAO(uint id, uint count) {</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// VAO дает возможность использовать</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// всего три команды</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;BindVertexArray(id);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;DrawArrays(GL_TRIANGLES, 0, count);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;BindVertexArray(0); // отвязка VAO</code></span>
+					<span class="tr"><span class="th"></span><code>}</code></span>
+					</pre>
+				</div><br/>
+				<p>&emsp;Текстуры в OpenGL состоят из изображения, мип-уровней (mip-level) и параметров обработки самой текстуры (режимы фильтрации, отсечения текстурных координат и др.). Изменение параметров обработки может быть затратным. Возникают ситуации, когда набор таких параметров одинаков для множества текстур и задание их для каждой текстуры может быть неэффективным. В этом случае необходимо использовать расширение ARB_sampler_objects, поддерживающее сэмплеры (sampler object), которые позволяют хранить параметры отдельно от текстуры, т. е. при создании текстуры ей не требуется вновь указывать различные параметры. Сэмплеры привязаны к текстурным блокам (texture unit), поэтому один сэмплер можно использовать с несколькими текстурами.</p>
+				<p>&emsp;Приведем пример. Вариант выполнения с каждой текстурой:</p><br>
+				<div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>BindTexture(TEXTURE_2D, tid);</code></span>
+					<span class="tr"><span class="th"></span><code>TexParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);</code></span>
+					</pre>
+				</div><br/>
+				<p>&emsp;Способ, когда достаточно установить значение сэмплера один раз:</p><br/>
+				<div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>SamplerParameteri(sid, TEXTURE_MAG_FILTER, LINEAR);</code></span>
+					</pre>
+				</div><br/>
+				<p>&emsp;Теперь можно легко привязать сэмплер к текстурному блоку, и он будет использоваться для каждой текстуры:</p><br/>
+				<div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>BindSampler(texUnitNum, sid);</code></span>
+					</pre>
+				</div><br/>
+				<p>&emsp;Часто бывает нужно изменить какой-либо параметр у шейдера, текстуры или другого объекта OpenGL (иногда без изменения внутреннего состояния конвейера). Для этого придется получать текущий идентификатор, привязывать новый, выполнять какие-либо действия, потом привязывать старый. Все это увеличивает накладные расходы, что отрицательно сказывается на производительности. Поэтому необходимо использовать расширение EXT_direct_state_access, которое предоставляет bindless интерфейс для изменения объектов. Это расширение уменьшает накладные расходы и упрощает код, предоставляет функции для работы со всеми объектами OpenGL, его использование всегда желательно. Например, чтобы изменить значение uniform-переменной потребуется сделать следующее:</p><br>
+				<div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>uint oldSid;</code></span>
+					<span class="tr"><span class="th"></span><code>GetIntegerv(CURRENT_PROGRAM, &oldSid);</code></span>
+					<span class="tr"><span class="th"></span><code>UseProgram(sid);</code></span>
+					<span class="tr"><span class="th"></span><code>Uniform1f(loc, value);</code></span>
+					<span class="tr"><span class="th"></span><code>UseProgram(oldSid);</code></span>
+					</pre>
+				</div><br/>
+				<p>&emsp;а благодаря DSA:</p><br/>
+				<div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>ProgramUniform1f(sid, loc, value);</code></span>
+					</pre>
+				</div><br/>
+				<p>&emsp;Желательно избегать использования функций многих аргументов, так как это может накладывать дополнительные накладные расходы. Например, для передачи vec4 в шейдер лучше применять Uniform4fv вместо Uniform4f, если, конечно, координаты вектора хранятся в пользовательских типах последовательно, что позволяет просто получить указатель на них.</p>
+				<p>&emsp;Изменение состояния конвейера — операция не из «дешевых». Например, если необходимо применить одну текстуру к двум разным моделям, то лучше эти модели рисовать последовательно, чтобы было как можно меньше команд привязки (BindTexture). Это же относится и к остальным объектам OpenGL: шейдерам, сэмплерам, VBO, VAO и др.</p>
+				<p>&emsp;Неправильно:</p><br/>
+				<div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>text1.bind();</code></span>
+					<span class="tr"><span class="th"></span><code>mesh1.draw();</code></span>
+					<span class="tr"><span class="th"></span><code>text2.bind();</code></span>
+					<span class="tr"><span class="th"></span><code>mesh2.draw();</code></span>
+					<span class="tr"><span class="th"></span><code>text1.bind();</code></span>
+					<span class="tr"><span class="th"></span><code>mesh3.draw();</code></span>
+					</pre>
+				</div><br/>
+				<p>&emsp;Правильно:</p><br/>
+				<div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>text1.bind();</code></span>
+					<span class="tr"><span class="th"></span><code>mesh1.draw();</code></span>
+					<span class="tr"><span class="th"></span><code>mesh3.draw();</code></span>
+					<span class="tr"><span class="th"></span><code>text2.bind();</code></span>
+					<span class="tr"><span class="th"></span><code>mesh2.draw();</code></span>
+					</pre>
+				</div><br/>
+				<h2>Оптимизации рисования моделей.</h2>
+				<p>&emsp;Использование фиксированного конвейера (fixed pipeline) может серьезно сказаться на произво дительности, поскольку фиксированный конвейер содержит в себе реализацию возможностей, которые часто бывают просто не нужны (например, свет, туман и др.). В этом случае лучше подходит программируемый конвейер (programmable pipeline) с использованием шейдеров, которые обеспечивают гибкую реализацию всего необходимого без ущерба для производительности [1]. Также фиксированный конвейер в новых версиях OpenGL объявлен как deprecated. В общем случае при инициализации приложения достаточно загрузить и привязать шейдер. Все последующие команды рисования будут передавать данные именно ему. Приведем пример, демонстрирующий загрузку и использование шейдеров:</p><br>
+				<div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>// функция проверки состояния шейдера или линковки</code></span>
+					<span class="tr"><span class="th"></span><code>void checkStatus(bool isLinking = false)(uint id, string name) {</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;int status;</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// сообщение компиляции</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;char str[4096];</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// получение статуса шейдера</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;static if(isLinking)</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;GetProgramiv(id, LINK_STATUS, &status);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;else</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;GetShaderiv(id, COMPILE_STATUS, &status);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// получение информационного сообщения</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;static if(isLinking)</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;GetProgramInfoLog(id, str.sizeof, null, str.ptr);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;else</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;GetShaderInfoLog(id, str.sizeof, null, str.ptr);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;auto s = str.ptr.to!string;</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;if(status) {</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;// в случае успеха статус != 0</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;if(s.length)</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;&emsp;writeLog(`%s: %s`, name, s);</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;&emsp;return;</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;}</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;enum act = isLinking ? `linking` : `compiling`;</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// в случае неуспеха — генерация исключения</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;throwError("%s %s failed: %s\n", act, name, s);</code></span>
+					<span class="tr"><span class="th"></span><code>}</code></span>
+					<span class="tr"><span class="th"></span><code>// объявление вертексного и фрагментного шейдера</code></span>
+					<span class="tr"><span class="th"></span><code>string vs = `#version 330</code></span>
+					<span class="tr"><span class="th"></span><code>// переменная для передачи текстурных координат в фрагментный шейдер</code></span>
+					<span class="tr"><span class="th"></span><code>out vec2 fs_TexCoord;</code></span>
+					<span class="tr"><span class="th"></span><code>layout(location = 0) in vec3 vs_Position;</code></span>
+					<span class="tr"><span class="th"></span><code>// координаты</code></span>
+					<span class="tr"><span class="th"></span><code>layout(location = 1) in vec2 vs_TexCoord;</code></span>
+					<span class="tr"><span class="th"></span><code>// текстурные координаты</code></span>
+					<span class="tr"><span class="th"></span><code>uniform mat4 vs_Model; // матрица модели</code></span>
+					<span class="tr"><span class="th"></span><code>uniform mat4 vs_ViewProj; // матрица камеры вместе с проекцией</code></span>
+					<span class="tr"><span class="th"></span><code>void main() {</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;// записываем текстурные координаты для фрагментного шейдера</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;fs_TexCoord = vs_TexCoord;</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;vec4 v = vs_Model * vec4(vs_Position, 1.0); // трансформируем вершину</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;gl_Position = vs_ViewProj * v; // записываем результат</code></span>
+					<span class="tr"><span class="th"></span><code>}</code></span>
+					<span class="tr"><span class="th"></span><code>`, fs = `#version 330</code></span>
+					<span class="tr"><span class="th"></span><code>in vec2 fs_TexCoord;</code></span>
+					<span class="tr"><span class="th"></span><code>uniform sampler2D fs_Texture;</code></span>
+					<span class="tr"><span class="th"></span><code>void main() {</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;gl_FragColor = texture(fs_Texture, fs_TexCoord); // выборка из текстуры</code></span>
+					<span class="tr"><span class="th"></span><code>}</code></span>
+					<span class="tr"><span class="th"></span><code>`;</code></span>
+					<span class="tr"><span class="th"></span><code>// создание шейдерной программы</code></span>
+					<span class="tr"><span class="th"></span><code>auto prog = CreateProgram();</code></span>
+					<span class="tr"><span class="th"></span><code>// проверка на ошибки</code></span>
+					<span class="tr"><span class="th"></span><code>prog || throwError(`can't create shader program`);</code></span>
+					<span class="tr"><span class="th"></span><code>// очистка ресурсов в случае неудачи</code></span>
+					<span class="tr"><span class="th"></span><code>scope(failure)</code></span>
+					<span class="tr"><span class="th"></span><code>DeleteProgram(prog)</code></span>
+					<span class="tr"><span class="th"></span><code>// создание вертексного шейдера</code></span>
+					<span class="tr"><span class="th"></span><code>auto vs = CreateShader(VERTEX_SHADER);</code></span>
+					<span class="tr"><span class="th"></span><code>vs || throwError(`can't create vertex shader`);</code></span>
+					<span class="tr"><span class="th"></span><code>// удаление шейдера после успешного выхода из функции</code></span>
+					<span class="tr"><span class="th"></span><code>scope(exit)</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;DeleteShader(vs);</code></span>
+					<span class="tr"><span class="th"></span><code>// создание фрагментного шейдера</code></span>
+					<span class="tr"><span class="th"></span><code>auto fs = CreateShader(FRAGMENT_SHADER);</code></span>
+					<span class="tr"><span class="th"></span><code>fs || throwError(`can't create fragment shader`);</code></span>
+					<span class="tr"><span class="th"></span><code>scope(exit)</code></span>
+					<span class="tr"><span class="th"></span><code>&emsp;DeleteShader(fs);</code></span>
+					<span class="tr"><span class="th"></span><code>// загрузка исходного кода</code></span>
+					<span class="tr"><span class="th"></span><code>ShaderSource(vs, 1, vs.ptr, null);</code></span>
+					<span class="tr"><span class="th"></span><code>// компиляция</code></span>
+					<span class="tr"><span class="th"></span><code>CompileShader(vs);</code></span>
+					<span class="tr"><span class="th"></span><code>// проверка статуса вертексного шейдера</code></span>
+					<span class="tr"><span class="th"></span><code>checkStatus(vs, `vertex shader`);</code></span>
+					<span class="tr"><span class="th"></span><code>// теперь то же самое, но с фрагментным шейдером</code></span>
+					<span class="tr"><span class="th"></span><code>ShaderSource(fs, 1, fs.ptr, null);</code></span>
+					<span class="tr"><span class="th"></span><code>CompileShader(fs);</code></span>
+					<span class="tr"><span class="th"></span><code>checkStatus(fs, `fragment shader`);</code></span>
+					<span class="tr"><span class="th"></span><code>// привязываем шейдеры к шейдерной программе</code></span>
+					<span class="tr"><span class="th"></span><code>gl AttachShader(prog, vs);</code></span>
+					<span class="tr"><span class="th"></span><code>gl AttachShader(prog, fs);</code></span>
+					<span class="tr"><span class="th"></span><code>// линковка программы</code></span>
+					<span class="tr"><span class="th"></span><code>gl LinkProgram(prog);</code></span>
+					<span class="tr"><span class="th"></span><code>// проверка линковки</code></span>
+					<span class="tr"><span class="th"></span><code>checkStatus!true(prog, `shader program`);</code></span>
+					<span class="tr"><span class="th"></span><code>// привязка шейдера к контексту</code></span>
+					<span class="tr"><span class="th"></span><code>UseProgram(prog);</code></span>
+					</pre>
+				</div><br/>
+				<p>&emsp;Теперь при рисовании достаточно установить матрицы объектов:</p><br>
+				<div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>auto loc = GetUniformLocation(“vs_Model”);</code></span>
+					<span class="tr"><span class="th"></span><code>UniformMatrix4fv(loc, 1, FALSE, matrix.ptr);</code></span>
+					</pre>
+				</div><br/>
+				<p>&emsp;Многие объекты на сцене достаточно удалены от камеры, поэтому имеют малые размеры. Использовать высокодетализированные текстуры вместе с ними не имеет смысла, так как может быть видно всего лишь несколько пикселов из всей текстуры, а это ведет к увеличению кэш-промахов и падению производительности. В OpenGL присутствует техника под названием мипмаппинг (mipmapping), суть которой состоит в том, что для исходной текстуры создаются уменьшенные копии, каждая из которой в 4 раза меньше предыдущей. Копии создаются до тех пор, пока не получится текстура размером в 11 пиксел. Во время рендеринга определяется расстояние до объекта, в зависимости от которого выбирается подходящая текстура (мип-уровень). Это позволяет не использовать высокую детализацию там, где в этом нет смысла, а значит, повысить производительность. Недостатком подхода является увеличение расходов памяти на 1/3. Но для современных видеокарт с их объемами памяти это не должно быть проблемой. Сгенерировать мипуровни можно следующим способом:</p><br/>
+				<p>&emsp;Теперь при рисовании достаточно установить матрицы объектов:</p><br>
+				<div class="flex-center">
+					<pre class="code">
+					<span class="tr first-row"><span class="th"></span><code>BindTexture(TEXTURE_2D, tid); // привязываем текстуру</code></span>
+					<span class="tr"><span class="th"></span><code>// заставляем OpenGL сгенерировать мип-уровни</code></span>
+					<span class="tr"><span class="th"></span><code>GenerateMipmap(TEXTURE_2D);</code></span>
+					</pre>
+				</div><br/>
+
+				<p>&emsp;Стоит учесть, что качество мип-уровней, сгенерированных драйвером OpenGL, не всегда может быть лучше. В этом случае можно самостоятельно загружать собственные изображения по мип-уровням.</p>
+				<p>&emsp;Если требуется вывести множество одинаковых объектов, но с разными координатами, поворотом, размером и т. д., необходимо использовать расширение EXT_draw_instanced, позволяющее за один вызов нарисовать сразу множество объектов [2]. Каждый объект будет рисоваться в отдельной инстанции, при этом к нему можно прицепить различные атрибуты (например, матрицу трансформации). Для этого достаточно упаковать атрибуты в обычный VBO, а при его привязке использовать функцию VertexAttribDivisor, которая укажет OpenGL, что этот буфер необходимо использовать поинстанционно, а не повершинно. Для рисования применяются функции с приставкой Instanced, например DrawElementsInstanced.</p>
+				<p>&emsp;Сортировка объектов по дальности удаления от камеры положительно влияет на производительность, так как GPU сможет отбрасывать полигоны, которые лежат позади уже нарисованных.</p>
+				<p>&emsp;Отрисовка объектов, лежащих за пирамидой видимости, негативно влияет на производительность, поскольку заставляет GPU совершать операции над объектами, которые пользователь никогда не увидит. Использование frustum culling позволяет легко исключить их из отрисовки. Реализация frustum culling сводится к построению ограничивающего параллелепипеда (bounding box) для модели. Также строятся уравнения плоскости усеченной пирамиды камеры. При рисовании проверяется каждая из восьми точек bounding box на принадлежность этой пирамиде. Если все точки лежат вне пирамиды, то объект можно не рисовать.</p>
+				<p>&emsp;В паре с frustum culling может также использоваться расширение ARB_occlusion_query, позволяющее находить объекты, которые не будут видны вообще (например, мелкие объекты позади крупных).</p>
+				<h2>Оптимизации моделей.</h2>
+				<p>&emsp;Использование GL_QUADS и других типов примитивов, отличных от GL_TRIANGLE, обычно плохо сказывается на производительности. GPU умеет рисовать только треугольники, поэтому остальные типы примитивов преобразуются драйвером именно в них, что не всегда происходит оптимально и может иметь дополнительные накладные расходы.</p>
+				<p>&emsp;Применение индексированной геометрии позволит уменьшить количество вершин и объем занимаемой ими памяти, что также ускорит вывод. Использование 8-битных индексов для маленьких моделей может негативно сказаться на производительности. Быстрее всего GPU работают с 16-битными индексами. Также стоит избегать 32 битных индексов, поскольку они занимают больше памяти. В случае больших моделей лучше использовать несколько буферов.</p>
+				<p>&emsp;Применение GL_TRIANGLE_STRIP вместо GL_TRIANGLES полезно, так как количество индексов в лентах треугольников обычно меньше, что положительно влияет на использование памяти и скорость рисования. Расширение NV_primitive_restart (также доступ но на видеокартах ATI) позволяет избавиться от дегенератов (degenerate triangles).</p>
+				<p>&emsp;Вертексы и индексы должны быть отсортированы так, чтобы максимально задействовать pre-vertex cache и post-vertex cache. GPU всегда использует pre-vertex cache и читает вертексы «наперед», поэтому полезно расположить вертексы, используемые через небольшие промежутки времени, близко один к другому [3]. В post-vertex cache GPU хранит несколько последних трансформированных вертексов, что позволяет не выполнять для них повторные трансформации. Использование лент треугольников дает возможность в максимальной степени задействовать post-vertex cache.</p>
+				<p>&emsp;Сжатие текстур увеличивает производительность благодаря уменьшению количества пересылаемых данных по шине. Основных способов сжатия текстур три: DXT1, DXT3 и DXT5. Первый позволяет сжимать текстуры в 8 раз, но имеет альфа-канал всего в один бит, т. е. полупрозрачные текстуры не поддерживаются. Второй и третий имеют поддержку альфа-канала, но сжимают текстуры в 4 раза хуже. Отметим, что DXT3 может давать лучшее качество, если исходное изображение содержит резкие переходы альфа-канала. Стоит учесть, что степень сжатия всегда гарантирована. DXT — это алгоритм сжатия с потерями. Качество исходного изображения может незначительно измениться, но в общем случае разница между сжатой и оригинальной текстурами не заметна. Использование сжатия позволяет также увеличить скорость загрузки текстур и уменьшить размер установочного пакета приложения.</p>
+				<p>&emsp;Использование объектов с различной степенью детализации положительно скажется на производительности, если во время рисования выбирать наиболее подходящую модель по расстоянию до камеры. Это позволит сократить расходы на рендеринг удаленных объектов, не нуждающихся в высокой детализации.</p>
+				<p>&emsp;Таким образом, низкоуровневые оптимизации значительно уменьшают нагрузку на CPU, а оптимизации рисования и самих моделей снижают нагрузку на GPU, что помогает создавать качественное и быстрое программное обеспечение.</p>
+				<h2>Литература</h2>
+				<ul class="links">
+					<li>1. Евченко А.И. OpenGL и DirectX: программирование графики. Для профессионалов. Санкт-Петербург, Питер, 2006, 350 с.</li>
+					<li>2. Фрэнсис Х. OpenGL. Программирование компьютерной графики. Для профессионалов. Шкадов А., ред. Санкт-Петербург, Питер, 2002, 1088 с.</li>
+					<li>3. Шикин Е.В., Боресков А.В. Компьютерная графика. Полигональные модели. Москва, ДИАЛОГ-МИФИ, 2001, 384 с.</li>
+					</ul>
+			</article>
+
+		</main>
+	</body>
+</html>

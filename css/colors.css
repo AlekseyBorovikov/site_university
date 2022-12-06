@@ -1,0 +1,11 @@
+:root{
+/* theme colors */
+  --primary-color-gradient-start: #353627;
+  --primary-color: #35361D;
+  --primary-color-gradient-end: #353613;
+  --gradient: var(--primary-color-gradient-start) 10%, var(--primary-color) 50%, var(--primary-color-gradient-end) 40%;
+  --secondary-color: #998F07;
+  --background-color: #282A31;
+  --accent-color: #4ec2a1;
+  --text-color: #a6afa1;
+}

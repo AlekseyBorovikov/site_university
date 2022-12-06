@@ -1,0 +1,32 @@
+.responsive_image_20,
+.responsive_image_30,
+.responsive_image_50,
+.responsive_image_80
+{
+  height: auto;
+  border-radius: 10px;
+  border: 5px solid var(--secondary-color);
+  background-color: white;
+}
+
+.responsive_image_80 {
+  width: 80%;
+}
+
+.responsive_image_50 {
+  width: 50%;
+}
+
+.responsive_image_30 {
+  width: 30%;
+}
+
+.responsive_image_20 {
+  width: 20%;
+}
+
+.image_container {
+  width: 100%;
+  height: auto;
+  margin-top: 32px;
+}

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Реферат</title>
+		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<link rel="stylesheet" type="text/css" href="../css/image_style.css">
+		<link rel="stylesheet" type="text/css" href="../css/font-style.css">
+		<link rel="stylesheet" type="text/css" href="../css/layout-style.css">
+		<link rel="stylesheet" type="text/css" href="../css/dimens.css">
+		<link rel="stylesheet" type="text/css" href="../css/colors.css">
+		<script src="../components/main_inform.js" type="text/javascript" defer></script>
+		<script src="../components/header.js" type="text/javascript" defer></script>
+		<script src="../components/menu.js" type="text/javascript" defer></script>
+		<script src="../components/footer.js" type="text/javascript" defer></script>
+	</head>
+
+	<body>
+		<header>
+			<header-content
+				style="width: 100%;"
+				class="flex-center"
+				community_name="Магистры"
+				universe_name="ДонНТУ"
+				language="русский"
+			></header-content>
+		</header>
+ 
+		<main>
+			<main-inform-component
+				class="flex-center"
+				full_name="Боровиков Алексей Иванович"
+				faculty="Факультет интеллектуальных систем и программирования"
+				department="Кафедра программной инженерии им. Л. П. Фельдмана"
+				specialization="Специальность «Методы и средства разработки программного обеспечения»"
+				graduate_work="Оптимизация и повышение производительности игровых движков для android"
+				scientific_adviser="Научный руководитель: зав. кафедрой Зори"
+			></main-inform-component>
+
+			<div class="scroll-menu flex-center">
+				<a href="../index.html">Резюме</a>
+				<a href="../bio/index.html">Биография</a>
+				<a href="../diss/index.html">Реферат</a>
+				<a href="../library/index.html">Библиотека</a>
+				<a href="../links/index.html">Ссылки</a>
+				<a href="../links/zvit/index.html">Отчёт о поиске</a>
+				<a id="selected">Индивидуальный раздел</a>
+			</div>
+			
+			<div class="content_block flex-center">
+				
+				<article class="main_content">
+					
+					<h2>Введение</h2>
+
+					<p>&emsp;Сегодня сложно представить повседневную жизнь без современных приборов. К таким приборам относятся: стиральная машина, микроволновая печь, компьютеры и тд.. Но главным прибором, без которого сложно представить повседневную жизнь современного человека, является, конечно, смартфон. Ведь, с их помощью  мы не только разговариваем по телефону или обмениваемся сообщениями, но и слушаем музыку, смотрим фильмы и сериалы, играем в игры, сидим в интернете, делаем фото и читаем книги. Функционал современных телефон просто огромен. По состоянию на июнь 2020 года, смартфонами пользуется 66.6% населения Земли.</p>
+
+					<div class="image_container flex-center">
+						<img src="../images/smartfoni_i_internet.png" class="responsive_image_50 flex-center">
+					</div>
+					<p id="image_description">Отчет компании Hootsuite за Июнь 2020 года</p>
+
+					<h2>Кому понадобится разработка приложений под Android</h2>
+
+					<p>&emsp;Популярность Android приложений с каждым годом только растёт и приносит их владельцам всё больше прибыли. К примеру, по данным Sensor Tower, в 2020м году выручка Google Play, в сравнении с предыдущим годом, увеличилась на 30%.</p>
+
+					<ol class="styled">
+						<li>
+							<span class="title">Корпоративному бизнесу</span>
+							<div class="description">
+								Приложение поможет автоматизировать рабочие процессы, создать удобную платформу для взаимодействия с клиентами и персоналом, быстро получать обратную связь и анализировать эффективность работы.
+							</div>
+						</li>
+						<li>
+							<span class="title">E-commerce</span>
+							<div class="description">
+								Мобильное приложение поможет привлечь новых покупателей, рекламировать новые товары.
+							</div>
+						</li>
+						<li>
+							<span class="title">Стартап</span>
+							<div class="description">
+								Поможет быстро вывести идею на рынок и получить первую прибыль, заинтересовать инвесторов и изучить свою аудиторию с помощью внутренней статистики приложения. 
+							</div>
+						</li>
+					</ol>
+
+					<h2>Кому понадобится разработка приложений под Android</h2>
+					<ul class="circular_marker">
+						<li><p>Приложение поможет автоматизировать рабочие процессы, создать удобную платформу для взаимодействия с клиентами и персоналом, быстро получать обратную связь и анализировать эффективность работы.</p></li>
+						<li><p>Мобильное приложение поможет привлечь новых покупателей, рекламировать новые товары.</p></li>
+						<li><p>Возможность охватить большую целевую аудиторию, т.к. смартфоны есть у большинства населения планеты.</p></li>
+						<li><p>Есть возможность реализовать функции, которые помогут поддерживать связь с пользователями и увеличить продажи.</p></li>
+					</ul>
+
+					<h2>Специфика разработки мобильных приложений с нуля</h2>
+
+					<p>&emsp;Разработка android-приложения непростая задача, т.к. нужно знать несколько моментов.</p>
+					<ol class="styled">
+						<li><span class="title">Большая фрагментация устройств</span>
+							<div class="description">
+								Это хорошо для пользователей, однако непросто для разработчиков. Аппаратно у смартфона может быть фронтальная камера, а может и не быть. Симкарт может быть любое количество, физические кнопки могут присутствовать или нет, экранов может быт несколько.
+							</div>
+							<div class="description">
+								Существующие элементы могут быть так же разные, например, акселерометр у всех может быть установлен в нескольких вариантах.
+							</div>
+							<div class="image_container flex-center">
+								<img src="../images/accelerometer.png" class="responsive_image_30 flex-center">
+							</div>
+							<p id="image_description">Расположение осей акселерометра</p>
+							<div class="description">
+								Размер экрана так же является большой проблемой. Например , если вам нужно разместить изображение на весь экран iOS, вы используете несколько изображений под типовые размеры iPhone 6 и выше, iPhone 6 Plus и выше, iPhone X и iPhone X Max. В случае же с Android экраны имеют разные разрешения, соотношение сторон и плотность.
+							</div>
+							<div class="image_container flex-center">
+								<img src="../images/ios_android_screens.jpg" class="responsive_image_50 flex-center">
+							</div>
+							<p id="image_description">Схематичная демонстрация основных размеров экранов Android и iOS</p>
+						</li>
+						<li>
+							<span class="title">Большое количество видов операционной системы Android</span>
+							<div class="description">
+								При разработке необходимо учитывать особенности отображения вашего интерфейса на разных версиях ОС и оболочках. На разных версиях интерфейс может выглядеть по разному.
+							</div>
+							<div class="description">
+								Более того, google активно разрабатывают свою систему, удаляют уязвимости и совершенствуют существующие компоненты ОС, из-за чего функции доступные на одной версии ОС могут быть недоступны на другой. Например, до версии 6.0 приложения не должны были запрашивать каждое разрешение отдельно (доступ к камере, микрофону и так далее), они указывались списком в Google Play и, подразумевалось, что пользователь ознакамливается с ними до момента загрузки. Начиная с 6.0 каждое разрешение должно быть запрошено отдельно уже в момент работы приложения. Соотвественно, если вы не реализовываете оба варианта логики при разработке мобильного приложения андроид, оно не будет работать либо до версии 6.0, либо в более поздних.
+							</div>
+							<div class="description">
+								В последних видах ОС добавилась многозадачность рабочей области. Пользователь может отобразить на рабочей области одновременно несколько приложений и вашему может быть выделена совершенна произвольная по размеру область. Это также надо учитывать при создании приложений.
+							</div>
+						</li>
+						<li>
+							<span class="title">Архитектура самого приложения</span>
+							<div class="description">
+								В отличие от iOS, где приложения архитектурно представляют собой нечто единое целое, в Android они собираются из логически самостоятельных и обособленных частей – активити и фрагментов.
+							</div>
+							<div class="description">
+								Такой подход был создан как раз для того, чтобы обеспечить работу приложений на совершенно любых мобильных, в том числе с очень малым объемом оперативной памяти и очень слабыми процессорами. Если части приложения независимы, любую из них можно в нужный момент выбросить из памяти и не тратить на поддержание ее жизненного цикла драгоценные ресурсы.
+							</div>
+							<div class="image_container flex-center">
+								<img src="../images/android_fragments.jpg" class="responsive_image_50 flex-center">
+							</div>
+							<p id="image_description">Активити и фрагменты</p>
+						</li>
+					</ol>
+
+					<h2>Выводы</h2>
+
+					<p>&emsp;Смартфоны есть у большинства людей на планете, а одной из самых популярных операционных систем является OS Android. Приложения на android помогут получить дополнительную прибыль или помогут получить первую прибыль стартапу.</p>
+
+					<p>&emsp;Разработка же android-приложений является непростой задаче из-за большой вариативности аппаратных и программных составляющих, которые нужно поддерживать в каждом приложении.</p>
+
+					<h2>Ссылки</h2>
+					
+					<ul class="clear">
+						<li><a id="content" href="https://androidinsider.ru/analitika/interesnaya-statistika-smartfony-soczseti-internet.html">1. Интересная статистика: смартфоны, соцсети, Интернет: https://androidinsider.ru/analitika/interesnaya-statistika-smartfony-soczseti-internet.html</a></li>
+						<li><a id="content" href="https://appcraft.pro/blog/razrabotka-prilozhenij-dlja-android">2. Разработка и создание мобильных приложений для Android: https://appcraft.pro/blog/razrabotka-prilozhenij-dlja-android</a></li>
+					</ul>
+				
+			</article>
+				
+			</div>
+			
+		</main>
+
+		<footer class="flex-center">
+	      <footer-content></footer-content>
+	    </footer>
+	</body>
+</html>

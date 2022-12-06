@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Реферат</title>
+		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<link rel="stylesheet" type="text/css" href="../css/image_style.css">
+		<link rel="stylesheet" type="text/css" href="../css/font-style.css">
+		<link rel="stylesheet" type="text/css" href="../css/layout-style.css">
+		<link rel="stylesheet" type="text/css" href="../css/dimens.css">
+		<link rel="stylesheet" type="text/css" href="../css/colors.css">
+		<script src="../components/main_inform.js" type="text/javascript" defer></script>
+		<script src="../components/header.js" type="text/javascript" defer></script>
+		<script src="../components/menu.js" type="text/javascript" defer></script>
+		<script src="../components/footer.js" type="text/javascript" defer></script>
+	</head>
+
+	<body>
+		<header>
+			<header-content
+				style="width: 100%;"
+				class="flex-center"
+				community_name="Masters"
+				universe_name="DonNTU"
+				ru-lang="true"
+				uk-lang="true"
+			></header-content>
+		</header>
+ 
+		<main>
+			<main-inform-component
+				class="base_area flex-center"
+				full_name="Borovikov Aleksey Ivanovich"
+				faculty="Faculty of Intelligent Systems and Programming"
+				department="Department of Software Engineering named after L. P. Feldman"
+				specialization="Specialty «Methods and means of software development»"
+				graduate_work="Optimization and performance improvement of game engines for android"
+				scientific_adviser="Scientific supervisor: Head of the Department Zori"
+			></main-inform-component>
+			
+			<div class="scroll-menu flex-center">
+				<a href="../indexe.html">Summary</a>
+				<a href="../bio/indexe.html">Biography</a>
+				<a id="selected">Abstract</a>
+			</div>
+			
+			<div class="content_block flex-center">
+				
+				<article class="main_content">
+					
+					<h2>Content</h2>
+
+					<ul class="clear">
+						<li><a id="content" href="#intro">Introduction</a></li>
+						<li><a id="content" href="#infl">1. What affects performance?</a></li>
+						<li><a id="content" href="#ways">2. Ways to optimize the code</a></li>
+						<li><a id="content" href="#java_opt">3. Optimization of the engine based on the java language</a></li>
+						<li><a id="content" href="#opengl_opt">4. OpenGL-based optimization</a></li>
+						<li><a id="content" href="#high_level_opt">5. High-level optimization</a></li>
+						<li><a id="content" href="#low_level_opt">6. Low-level optimization</a></li>
+						<li><a id="content" href="#engine_opt">7. Optimization of games for smartphones</a></li>
+						<li><a id="content" href="#links">List of sources</a></li>
+					</ul>
+
+					<a name="intro"></a>
+					<h2 name="">Introduction</h2>
+
+					<p>&emsp;Performance is an important component of any game, the popularity of the game, user comfort and overall impression depend on it <a id="content" href="#links">[1]</a>. Performance usually means the average FPS level in the game for a certain period of time.  FPS (Frames Per Second) is the number of frames per second, frames are images that the graphics adapter processes at the command of the CPU. The more frames are shown per second, the smoother and more comfortable the game is.</p>
+
+					<p>&emsp;Contrary to expectations, few players require high FPS rates, for most, an average of 30 units is enough, and for some even less. Studies conducted by Lesta Studio show that for the entire population of users, the relationship between performance and a comfortable game is rather weak (Fig.1).</p>
+
+					<div class="image_container flex-center">
+						<img src="../images/comfort_fps.png" class="responsive_image_80 flex-center">
+					</div>
+					<p id="image_description">Figure 1 – Diagram of the relationship between comfort perception and average FPS</p>
+
+					<p>&emsp;However, the level of comfort also depends on the genre of the game and on the user himself. For example, many console games operate at a frequency of 30fps, but with such indicators, the picture is not smooth enough, and the feedback on the player's manipulations is delayed, which prevents full immersion in the game. For players in casual arcade games, 40+fps will be enough, for first-person shooters, strategies, rhythm games, MOBA will need about 60-100fps <a id="content" href="#links">[2]</a>. The Fps score above 100 will be required for players of competitive shooters or esports players.</p>
+
+					<p>&emsp;Thus, if you do not take into account the fps preferences of professional players, then for the majority an average of 60fps will be comfortable, this indicator is considered a comfortable minimum.</p>
+
+					<a name="infl"></a>
+					<h2>What affects performance? <a id="content" href="#links">[3]</a></h2>
+					<p>Consider the most popular factors affecting optimization</p><br/>
+					<div class="image_container flex-center" id="anim">
+						<img src="../images/anim.gif" class="responsive_image_50 flex-center">
+					</div>
+					<p id="image_description">Key Factors Affecting Optimization</p><br>
+
+					<ol class="styled">
+						<li class="styled"><span class="title">Client software</span>
+							<div class="description">
+								If the system is loaded with background processes or programs are running that access the disk during the game, then there may not be enough resources for the game itself.
+							</div>
+						</li>
+						<li><span class="title">PC Configuration</span> 
+							<div class="description">The performance directly depends on the computer components.</div>
+						</li>
+						<li><span class="title">Graphics Settings</span>
+							<div class="description">The graphics are usually configured by users themselves or use presets, but neither option is a guarantee that the settings will be set as optimally as possible, which is why the user loses performance.</div></li>
+						<li><span class="title">Network problems</span>
+							<div class="description">Client-server interaction is not always stable, users often have problems with the network, which affects the performance of network games. The reason for this may be problems on the provider's side, a large number of wireless clients, a suboptimal network route for traffic delivery, poor-quality network equipment.</div>
+						</li>
+						<li><span class="title">Modifications</span>
+							<div class="description">Modifications of the original game by third-party developers negatively affect performance. They not only reduce the average fps, but also create sharp dips in cases where a clean client works stably.</div>
+						</li>
+						<li><span class="title">The speed of the application</span>
+							<div class="description">There are a huge number of different game engines with their pros and cons, they all consume different amounts of resources, depending on the quality of the architecture and the supported effects. The programming language in which the engine is written also affects, because resources are distributed differently in different languages. This will be discussed further.</div>
+						</li>
+					</ol>
+
+					<a name="ways"></a>
+					<h2>Ways to optimize the code</h2>
+
+					<p>&emsp;In order for the engine to produce the maximum number of fps, it is necessary not only to be able to work effectively with it, but also to know the subtleties of development in the language in which the engine is written, and the principles of the engine for a better understanding of the resource allocation process. <a id="content" href="#links">[4]</a></p>
+
+					<p>&emsp;There are many different factors affecting the processing speed of frames, let's look at the general methods of code optimization. Which can be suitable in almost any situation:</p>
+
+					<ol class="styled">
+						<li><span class="title">Minimizing the influence of objects outside the screen</span>
+							<div class="description">Minimizing the amount of calculations by optimizing the rendering of objects is extremely important. Often this is done by engines, or a graphics processor. For implementation, it is necessary to divide the object into 2 layers - the first will be a graphical representation of the object, and the second - data and functions. Thus, if the object is outside the screen, we no longer need to draw it.</div>
+						</li>
+						<li><span class="title">Independence from frame updates</span>
+							<div class="description">Usually, in game engines, most objects are updated in each frame, this greatly loads the processor and lowers performance. It is necessary, if possible, to get rid of the update in each frame. To do this, you need to separate the rendering function and call it only when the state of the object changes.</div>
+						</li>
+						<li><span class="title">Direct calculations and value search</span>
+							<div class="description">Неплохую прибавку к производительности может дать хеширование тригонометрических функций, т.к. эффективнее хранить большую таблицу и брать данные из неё, а не выполнять расчёты на лету.</div>
+						</li>
+						<li><span class="title">Downtime</span>
+							<div class="description">It is necessary to allocate functions that do not depend on time, for example, weather conditions and calculate them when the user has moved away, is busy reading or other things that are not resource-intensive. The time that is released when the user is busy with things that do not load the processor can be used to calculate many other events.</div>
+						</li>
+					</ol>
+
+					<a name="java_opt"></a>
+					<h2>Optimization of the engine based on the java language</h2>
+
+					<p>&emsp;It is also not superfluous to mention the optimization of the code, based on the features of the java programming language and the features of working with engines based on it <a id="content" href="#links">[5]</a>:</p>
+
+					<ol class="styled">
+						<li><span class="title">Loops</span> 
+							<div class="description">If you need to bypass a large array of data, for example, a list of rectangles (for rendering), enemies or any other heavy objects and you are going to use a for loop for this, then it is better to use the reverse for. The reverse for gives greater efficiency due to the fact that it does not need to check the size of the array every time, and this also happens because a comparison with zero is normal, while a comparison with an integer requires subtraction. But if there is no need to use a for loop, then while will be more efficient.</div>
+						</li>
+						<li><span class="title">Threads</span>
+							<div class="description">It is necessary to divide heavy actions into different threads and not run complex logic in the rendering thread. When profiling the CPU, you will see a thread named GLThread. Most engines use GL 2.0/3.0 for rendering, and this is the stream that contains the GL context. This means that every user interface change must be made through this thread, otherwise bad things happen — textures don't load, UI elements change simultaneously from different places, it can be a mess. The problem is that using this thread leaves the user with a hung application.</div>
+						</li>
+						<li><span class="title">Memory</span>
+							<div class="description">Do not forget to clean the components that are no longer needed. Java has its own garbage collector that cleans up unnecessary classes, but some engines, such as libGDX, do not do this. This is because OpenGL memory is not managed by the GC JVM, and thus if you create your own textures, you will have to delete them manually, otherwise you risk a hard-to-debug memory leak.</div>
+						</li>
+						<li><span class="title">Packages</span>
+							<div class="description">Calling the start and end of the sprite package and ShapeRenderer takes up a lot of memory. So, try your best to call the beginning and the end only once per frame. Try to visualize all your sprites and then visualize the shapes. Instead of rendering your sprites, then shapes, and then re-opening your spritebatch.</div>
+						</li>
+						<li><span class="title">Individual methods</span>
+							<div class="description">There are some methods that require a lot of resources (or more than others) when they are used, such as intersections of the Rectangle class. For example, the best thing you can do to view an array of rectangles is to first check if both rectangles are close, and if so, call the Intersects method for them. Instead of calling Intersects with all the rectangles in the array.</div>
+						</li>
+						<li><span class="title">Visualization</span>
+							<div class="description">The drawing method is another element that requires a lot of resources, if you need to change the state of an element, even if it is outside the screen, you can try to update its logic/variables every time, but call the drawing method only if it is inside the screen coordinates.</div>
+						</li>
+						<li><span class="title">Переменные</span>
+							<div class="description">Declaring variables or objects in bad places can cause hanging, avoid declaring variables in the rendering loop and basically don't declare them inside something like a for loop, instead declare them outside the loop and update its values inside. The good point about this is that it doesn't matter when we're talking about primitive data types, so if a variable is of type int, boolean, or float, declaring it inside a loop won't have a big impact on performance.</div>
+						</li>
+						<li><span class="title">Patterns</span>
+							<div class="description">Patterns greatly simplify the development and efficiency of the application, as well as code support. If you want to have one element that can interact and be in any class of your program, something ubiquitous, such as a player class, you can make it a Singleton class (this is very simple and will give you more convenient code). If you don't want your program to have useless instances that you may never use, you can use the Factory design pattern.Patterns greatly simplify the development and efficiency of the application, as well as code support. If you want to have one element that can interact and be in any class of your program, something ubiquitous, such as a player class, you can make it a Singleton class (this is very simple and will give you more convenient code). If you don't want your program to have useless instances that you may never use, you can use the Factory design pattern.</div>
+						</li>
+					</ol>
+
+					<a name="opengl_opt"></a>
+					<h2>OpenGL-based optimization</h2>
+					<p>&emsp;At first glance, it may seem that the performance of applications based on OpenGL is primarily determined by the performance of the implementation of the OpenGL library itself <a id="content" href="#links">[6]</a>. This is true, but the organization of the entire application (the use of local and global variables, data structures, libraries, command execution sequence) is also very important.</p>
+					<a name="high_level_opt"></a>
+					<h2>High-level optimization</h2>
+					<p>&emsp;Usually, an OpenGL program requires high-quality visualization at interactive speeds. But, as a rule, it is not possible to get both at once. Therefore, it is necessary to find a compromise between quality and performance. There are many different approaches to this issue <a id="content" href="#links">[7]</a>:</p>
+					<ul class="clear">
+						<li><p> – displaying the geometry of the scene with low quality during animation, and at the moments of stops showing it with the best quality;</p></li>
+						<li><p> – objects that are completely out of sight can be effectively cut off without being passed to the OpenGL pipeline by checking whether the simple volumes (spheres or cubes) that limit them fall into the pyramid of vision;</p></li>
+						<li><p> – visualization of the model with a reduced number of primitives during interactive rotation (for example, when the mouse key is pressed) and displaying the model completely when drawing a static image;</p></li>
+						<li><p> – during animation, you can disable pseudo-toning (dithering), smooth fill, texture overlay and enable all this during the demonstration of static images (this approach is especially effective for systems without OpenGL hardware support).</p></li>
+					</ul>
+					<a name="low_level_opt"></a>
+					<h2>Low-level optimization</h2>
+					<p>&emsp;Objects displayed using OpenGL are stored in some data structures. The speed of visualization is determined by the efficiency of using such structures. It is desirable to use data structures that can be quickly and efficiently transferred to the OpenGL pipeline. For example, if you need to display an array of triangles, then using a pointer to this array is much more efficient than passing it to OpenGL piecemeal.</p>
+					<p>&emsp;Suppose that an application is being created that implements the drawing of a terrain map. One of the components of the database is a list of cities with their width, longitude and name.</p>
+					<p>&emsp;A corresponding data structure is created to store information about the city. The list of cities can be stored as an array of such structures. Then a function is created that draws cities on the map as dots of different sizes with captions: if the city is small, then the dots have a size of 2 px, if large - 4 px.</p>
+					<p>&emsp;The implementation presented in the first variant is unsuccessful for the following reasons:</p>
+					<ul class="clear">
+						<li><p> – glPointSize() is called for each iteration of the loop;</p></li>
+						<li><p> – only one point is drawn between glBegin() and glEnd();</p></li>
+						<li><p> – vertices are defined in a non-optimal format.</p></li>
+					</ul>
+					<p>&emsp;In the second implementation, glPointSize() is called only twice, and the number of vertices between glBegin() and glEnd() increases. However, there are still ways to optimize. If you change the data structures, you can also increase the efficiency of drawing points.</p>
+					<p>&emsp;The third option can be considered the most optimal. After the reorganization, the structures of cities of different sizes are stored in different lists, the positions of points are stored separately in a dynamic array. The need for a conditional operator inside glBegin/glEnd is eliminated and it is possible to use arrays of vertices for optimization.</p>
+
+					<a name="engine_opt"></a>
+					<h2>Optimization of games for smartphones <a id="content" href="#links">[8]</a></h2>
+
+					<ol class="styled">
+						<li><span class="title">Download speed</span>
+							<div class="description">Players want to immerse themselves in the action of your game as quickly as possible, so it is important to reduce the loading time of your game as much as possible. The following measures usually help to reduce the loading time:
+								<p> – Perform lazy loading. If you use the same assets in consecutive scenes or levels of the game, load these assets only once;</p>
+								<p> – Reduce the size of your assets. This way you can link uncompressed versions of these resources to the APK of your game;</p>
+								<p> – Use a disk-efficient compression method. An example of such a method is zlib.</p>
+							</div>
+						</li>
+						<li><span class="title">Keep threads with a large amount of memory on a single processor</span>
+							<div class="description">On many mobile devices, L1 caches are on specific CPUs, and L2 caches are on a set of CPUs that share a common clock. To maximize the hit to the L1 cache, as a rule, it is best that the main thread of your game, along with any other threads with a large amount of memory, be executed on a single processor.</div>
+						</li>
+						<li><span class="title">Postpone short-term work on processors with less power</span>
+							<div class="description">Most game engines are able to defer workflow operations to a different CPU compared to the main thread of your game. However, the engine does not know about the specific architecture of the device and cannot anticipate the workload of your game as well as you <a id="content" href="#links">[9]</a>. Most system-on-chip devices have at least 2 common clock generators. one for fast device processors and one for slow device processors. The consequence of this architecture is that if one fast CPU needs to run at maximum speed, all other fast CPUs also run at maximum speed. The example report shown in Figure 2 shows a game that takes advantage of fast processors. However, this high level of activity quickly generates a large amount of energy and heat.
+							
+								<div class="image_container flex-center">
+									<img src="../images/cpu_report.svg" class="responsive_image_80 flex-center">
+								</div>
+								<p id="image_description">Figure 2 – Demonstration of suboptimal thread assignment to device processors</p>
+							</div>
+						</li>
+						<li><span class="title">Thermal load</span>
+							<div class="description">When devices overheat, they can slow down the CPU and/or GPU, and this can have an unexpected effect on games. Games that involve complex graphics, heavy computing, or sustained network activity are more likely to run into problems. Use the thermal API to monitor temperature changes on the device and take measures to maintain lower power consumption and lower device temperature. When the device reports overheating, stop the current activity to reduce power consumption. For example, reduce the frame rate or polygon tessellation.
+							<br/><br/>Loading user interface elements. to maintain a constant frame rate, it is important to take into account the relatively small size of mobile displays and simplify the user interface as much as possible.
+							<br/><br/>The report shown in Figure 3 is an example of a user interface frame that tries to display too many elements compared to the capabilities of a mobile device. A good goal is to reduce the user interface refresh time to 2-3 milliseconds. Such rapid updates can be achieved by performing an optimization similar to the following:
+							
+							<p>– Update only those elements on the screen that have been moved.</p>
+							<p>– Limit the number of textures and layers of the user interface. Combine graphical calls such as shaders and textures that use the same material.</p>
+							<p>– Transfer the animation operations of elements to the GPU.</p>
+							<p>– Perform a more aggressive clipping of the truncated pyramid and occlusion.</p>
+							<p>– If possible, perform drawing operations using the Vulcan API.</p>
+							<p>– The overhead of rendering calls is lower on Vulcan. <a id="content" href="#links">[10]</a></p>
+
+							<div class="image_container flex-center">
+								<img src="../images/ui_report.svg" class="responsive_image_20 flex-center">
+							</div>
+							<p id="image_description">Figure 3 is a report for a game in which dozens of user interface elements are displayed simultaneously.</p>
+							</div>
+						</li>
+					</ol>
+
+					<a name="links"></a>
+					<h2>List of sources</h2>
+
+					<ul class="clear">
+						<li><a id="content" href="https://andpro.ru/blog/pc/kakim-dolzhen-byt-komfortnyy-fps-v-igrakh/">1. Каким должен быть комфортный FPS в играх [Electronic resource] – Режим доступа: https://andpro.ru/blog/pc/kakim-dolzhen-byt-komfortnyy-fps-v-igrakh/</a></li>
+						<li><a id="content" href="https://habr.com/ru/company/lesta_studio/blog/265487/">2. Почему производительность в играх — это не просто средний FPS [Electronic resource] – Режим доступа: https://habr.com/ru/ company/lesta_studio/blog/265487/</a></li>
+						<li><a id="content" href="https://habr.com/ru/post/358176/">3. Основы оптимизации кода игр [Electronic resource] – Режим доступа: https://habr.com/ru/post/358176/</a></li>
+						<li><a id="content" href="https://www.reddit.com/r/libgdx/comments/7cw4va/optimizing_your_game/">4. Optimizing your Game [Electronic resource] – Режим доступа: https://www.reddit.com/r/libgdx/comments /7cw4va/optimizing_your_game/</a></li>
+						<li><a id="content" href="https://yairm210.medium.com/the-libgdx-performance-guide-1d068a84e181">5. The LibGDX performance guide [Electronic resource] – Режим доступа: https://yairm210.medium.com/the-libgdx-performance-guide-1d068a84e181</a></li>
+						<li><a id="content" href="https://www.khronos.org/opengl/">6. OpenGL Documentation [Electronic resource] – https://www.khronos.org/opengl/</a></li>
+						<li><a id="content" href="https://cyberleninka.ru/article/n/metody-optimizatsii-pod-opengl">7. Методы оптимизации под OpenGL [Electronic resource] – https://cyberleninka.ru/article/n/metody-optimizatsii-pod-opengl</a></li>
+						<li><a id="content" href="https://developer.android.com/games/optimize">8. Best practices for Android game optimization [Electronic resource] – Режим доступа: https://developer.android.com /games/optimize</a></li>
+						<li><a id="content" href="http://www.libgdx.ru/2013/08/introduction.html">9. libGDX - фреймворк для разработки игр [Electronic resource] – Режим доступа: http://www.libgdx.ru/2013 /08/introduction.html</a></li>
+						<li><a id="content" href="https://www.vulkan.org">10. Vulkan [Electronic resource] – Режим доступа: https://www.vulkan.org</a></li>
+					</ul>
+				
+				</article>
+				
+			</div>
+			
+		</main>
+
+		<footer class="flex-center">
+	      <footer-content contacts_caption="Contacts"></footer-content>
+	    </footer>
+	</body>
+</html>

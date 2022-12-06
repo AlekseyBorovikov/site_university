@@ -1,0 +1,14 @@
+ru
+Боровиков Алексей Иванович
+Оптимизация и повышение производительности игровых движков для android
+Программная инженерия
+
+ua
+Боровиков Олексій Іванович
+Оптимізація та підвищення продуктивності ігрових движків для android
+Програмна інженерія
+
+en
+Borovikov Aleksey Ivanovich
+Optimization and performance improvement of game engines for android
+Software Engineering

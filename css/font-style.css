@@ -1,0 +1,39 @@
+@font-face {
+    font-family: 'roboto';
+    src: url(../fonts/Roboto/Roboto-Bold.ttf);
+    font-weight: bold;
+    font-style: bold;
+}
+
+@font-face {
+    font-family: 'roboto';
+    src: url(../fonts/Roboto/Roboto-Medium.ttf);
+    font-weight: medium;
+    font-style: medium;
+}
+
+@font-face {
+  font-family: 'roboto';
+  src: url(../fonts/Roboto/Roboto-Regular.tff);
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+:root{
+    /* basic style */
+    --caption-font: roboto, sans-serif;
+    --font: sans-serif;
+}
+
+p#text-align-center, h2#text-align-center {
+    text-align: center;
+}
+
+p#text-align-right {
+    text-align: right;
+}
+
+p#tab, h2#tab{
+    padding-left: var(--large-indent);
+}
