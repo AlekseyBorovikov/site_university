@@ -67,6 +67,7 @@ class MainInform extends HTMLElement {
         border-radius: var(--border-radius);
         backdrop-filter: blur(3px);
         padding: var(--medium-indent);
+        max-width: 900px;
       }
 
       .base_content p,.base_content a {
