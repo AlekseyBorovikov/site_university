@@ -86,7 +86,7 @@
 					<div class="image_container flex-center" id="anim">
 						<img src="../images/anim.gif" class="responsive_image_50 flex-center">
 					</div>
-					<p id="image_description">Key Factors Affecting Optimization</p><br>
+					<p id="image_description">Figure 2 – Key Factors Affecting Optimization (animation) (6 frames)</p><br>
 
 					<ol class="styled">
 						<li class="styled"><span class="title">Client software</span>
@@ -205,18 +205,18 @@
 							<div class="description">On many mobile devices, L1 caches are on specific CPUs, and L2 caches are on a set of CPUs that share a common clock. To maximize the hit to the L1 cache, as a rule, it is best that the main thread of your game, along with any other threads with a large amount of memory, be executed on a single processor.</div>
 						</li>
 						<li><span class="title">Postpone short-term work on processors with less power</span>
-							<div class="description">Most game engines are able to defer workflow operations to a different CPU compared to the main thread of your game. However, the engine does not know about the specific architecture of the device and cannot anticipate the workload of your game as well as you <a id="content" href="#links">[9]</a>. Most system-on-chip devices have at least 2 common clock generators. one for fast device processors and one for slow device processors. The consequence of this architecture is that if one fast CPU needs to run at maximum speed, all other fast CPUs also run at maximum speed. The example report shown in Figure 2 shows a game that takes advantage of fast processors. However, this high level of activity quickly generates a large amount of energy and heat.
+							<div class="description">Most game engines are able to defer workflow operations to a different CPU compared to the main thread of your game. However, the engine does not know about the specific architecture of the device and cannot anticipate the workload of your game as well as you <a id="content" href="#links">[9]</a>. Most system-on-chip devices have at least 2 common clock generators. one for fast device processors and one for slow device processors. The consequence of this architecture is that if one fast CPU needs to run at maximum speed, all other fast CPUs also run at maximum speed. The example report shown in Figure 3 shows a game that takes advantage of fast processors. However, this high level of activity quickly generates a large amount of energy and heat.
 							
 								<div class="image_container flex-center">
 									<img src="../images/cpu_report.svg" class="responsive_image_80 flex-center">
 								</div>
-								<p id="image_description">Figure 2 – Demonstration of suboptimal thread assignment to device processors</p>
+								<p id="image_description">Figure 3 – Demonstration of suboptimal thread assignment to device processors</p>
 							</div>
 						</li>
 						<li><span class="title">Thermal load</span>
 							<div class="description">When devices overheat, they can slow down the CPU and/or GPU, and this can have an unexpected effect on games. Games that involve complex graphics, heavy computing, or sustained network activity are more likely to run into problems. Use the thermal API to monitor temperature changes on the device and take measures to maintain lower power consumption and lower device temperature. When the device reports overheating, stop the current activity to reduce power consumption. For example, reduce the frame rate or polygon tessellation.
 							<br/><br/>Loading user interface elements. to maintain a constant frame rate, it is important to take into account the relatively small size of mobile displays and simplify the user interface as much as possible.
-							<br/><br/>The report shown in Figure 3 is an example of a user interface frame that tries to display too many elements compared to the capabilities of a mobile device. A good goal is to reduce the user interface refresh time to 2-3 milliseconds. Such rapid updates can be achieved by performing an optimization similar to the following:
+							<br/><br/>The report shown in Figure 4 is an example of a user interface frame that tries to display too many elements compared to the capabilities of a mobile device. A good goal is to reduce the user interface refresh time to 2-3 milliseconds. Such rapid updates can be achieved by performing an optimization similar to the following:
 							
 							<p>– Update only those elements on the screen that have been moved.</p>
 							<p>– Limit the number of textures and layers of the user interface. Combine graphical calls such as shaders and textures that use the same material.</p>
@@ -228,7 +228,7 @@
 							<div class="image_container flex-center">
 								<img src="../images/ui_report.svg" class="responsive_image_20 flex-center">
 							</div>
-							<p id="image_description">Figure 3 is a report for a game in which dozens of user interface elements are displayed simultaneously.</p>
+							<p id="image_description">Figure 4 is a report for a game in which dozens of user interface elements are displayed simultaneously.</p>
 							</div>
 						</li>
 					</ol>
